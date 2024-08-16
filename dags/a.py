@@ -6,9 +6,14 @@ import os
 import sys
 
 #Path de carpeta
-path_dag = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+path_dag = os.path.dirname(os.path.dirname(__file__))
 path_src = os.path.join(path_dag,"src","repositorio_para_airflow")
 path_prueba_print = os.path.join(path_src,"prueba_print")
+
+print()
+print(path_dag)
+print()
+
 
 sys.path.append(path_src)
 
