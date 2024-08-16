@@ -1,24 +1,25 @@
 from airflow import Dataset
 from airflow.decorators import dag, task
 from pendulum import datetime
-import requests
 import os
 import sys
 
 #Path de carpeta
 path_dag = os.path.dirname(os.path.dirname(__file__))
+path_prueba = os.path.join(path_dag,"src")
+
 path_src = os.path.join(path_dag,"src","repositorio_para_airflow")
-path_prueba_print = os.path.join(path_src,"prueba_print")
 
-print()
-print(path_dag)
-print()
+print(path_src)
 
 
-sys.path.append(path_src)
+#from repositorio_para_airflow.prueba_print import main
+from scrapingTrabajo import scrap_EMAE as emae
 
-from prueba_print import main
 
+from scrapingTrabajo import scrap_EMAE as emae
+
+emae.main.main()
 
 # Definir el DAG
 @dag(
@@ -29,10 +30,14 @@ from prueba_print import main
 def print_hola_mundo():
 
     # Definir la tarea
-    @task
-    def main_prueba():
-        main()
+    #@task
+    #def main_prueba():
+    #   main()
 
-    main_prueba()
+    @task()
+    def emae_prueba():
+        emae.main.main()
+
+    emae_prueba()
 
 print_hola_mundo()
