@@ -6,20 +6,26 @@ import sys
 
 #Path de carpeta
 path_dag = os.path.dirname(os.path.dirname(__file__))
-path_prueba = os.path.join(path_dag,"src")
+path_prueba = os.path.join(path_dag,"src","scrapingTrabajo")
+sys.path.append(path_prueba)
 
-path_src = os.path.join(path_dag,"src","repositorio_para_airflow")
-
-print(path_src)
-
-
-#from repositorio_para_airflow.prueba_print import main
-from scrapingTrabajo import scrap_EMAE as emae
+#path_src = os.path.join(path_dag,"src","repositorio_para_airflow")
+#Agregamos ruta del proyecto y del SRC para acceder a multiples archivos
+#path_folder_github = os.path.join(path_dag,"src","scrapingTrabajo")
 
 
-from scrapingTrabajo import scrap_EMAE as emae
+#sys.path.append(path_src)
+#sys.path.append(path_folder_github)
 
-emae.main.main()
+
+#from prueba_print import main
+
+
+#PRUEBA con SCRIPT DE EMAE
+path_emae = os.path.join(path_prueba,"scrap_EMAE")
+sys.path.append(path_emae)
+
+from scrap_EMAE.main import main as main_emae
 
 # Definir el DAG
 @dag(
@@ -36,7 +42,8 @@ def print_hola_mundo():
 
     @task()
     def emae_prueba():
-        emae.main.main()
+        main_emae()
+
 
     emae_prueba()
 
