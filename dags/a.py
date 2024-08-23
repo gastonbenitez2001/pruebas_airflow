@@ -24,8 +24,13 @@ sys.path.append(path_prueba)
 #PRUEBA con SCRIPT DE EMAE
 path_emae = os.path.join(path_prueba,"scrap_EMAE")
 sys.path.append(path_emae)
-
 from scrap_EMAE.main import main as main_emae
+
+#PRUEBA con SCRIPT DE SUPERMERCADO
+path_supermercado = os.path.join(path_prueba,"scrap_Supermercados")
+sys.path.append(path_supermercado)
+from scrap_Supermercados.main import main as main_supermercado
+
 
 # Definir el DAG
 @dag(
@@ -33,18 +38,18 @@ from scrap_EMAE.main import main as main_emae
     schedule="@daily",
     catchup=False,
 )
-def print_hola_mundo():
+def ejecutar_bloque_a():
 
-    # Definir la tarea
-    #@task
-    #def main_prueba():
-    #   main()
 
     @task()
     def emae_prueba():
         main_emae()
 
+    @task()
+    def supermercados():
+        main_supermercado()
 
-    emae_prueba()
 
-print_hola_mundo()
+    emae_prueba() >> supermercados()
+
+ejecutar_bloque_a()
