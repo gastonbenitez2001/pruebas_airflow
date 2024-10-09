@@ -4,13 +4,17 @@ FROM quay.io/astronomer/astro-runtime:11.7.0
 USER root
 
 # Instalar las dependencias necesarias y Google Chrome
-RUN apt-get update && apt-get install -y \
-    wget \
-    gnupg \
-    && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable
+#RUN apt-get update && apt-get install -y \
+#    wget \
+#    gnupg \
+#    && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+#   && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' \
+#   && apt-get update \
+#   && apt-get install -y google-chrome-stable
+
 
 # Regresar al usuario original
 USER astro
+
+# Configurar Airflow para que escuche en todas las interfaces
+CMD ["bash", "-c", "airflow webserver -h 0.0.0.0"]

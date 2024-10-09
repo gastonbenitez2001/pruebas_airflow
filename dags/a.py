@@ -9,28 +9,18 @@ path_dag = os.path.dirname(os.path.dirname(__file__))
 path_prueba = os.path.join(path_dag,"src","scrapingTrabajo")
 sys.path.append(path_prueba)
 
-#path_src = os.path.join(path_dag,"src","repositorio_para_airflow")
-#Agregamos ruta del proyecto y del SRC para acceder a multiples archivos
-#path_folder_github = os.path.join(path_dag,"src","scrapingTrabajo")
-
-
-#sys.path.append(path_src)
-#sys.path.append(path_folder_github)
-
-
-#from prueba_print import main
-
 
 #PRUEBA con SCRIPT DE EMAE
 path_emae = os.path.join(path_prueba,"scrap_EMAE")
 sys.path.append(path_emae)
-from scrap_EMAE.main import main as main_emae
 
-#PRUEBA con SCRIPT DE SUPERMERCADO
+#PRUEBA con SUPERMERCADO
 path_supermercado = os.path.join(path_prueba,"scrap_Supermercados")
 sys.path.append(path_supermercado)
-from scrap_Supermercados.main import main as main_supermercado
+print(sys.path)
 
+from scrap_EMAE.main import main as emae_main
+from scrap_Supermercados.main import main as super_main
 
 # Definir el DAG
 @dag(
@@ -43,13 +33,13 @@ def ejecutar_bloque_a():
 
     @task()
     def emae_prueba():
-        main_emae()
+        emae_main()
 
     @task()
-    def supermercados():
-        main_supermercado()
+    def super_prueba():
+        super_main()
 
 
-    emae_prueba() >> supermercados()
+    emae_prueba() >> super_prueba()
 
 ejecutar_bloque_a()

@@ -1,2 +1,10 @@
+airflow:
+    webserver:
+        command: bash -c "airflow webserver -h 0.0.0.0"
+        environment:
+            airflow_webserver_enable_proxy_fix: "True"
+        image: quay.io/astronomer/astro-runtime:11.7.0
+        ports:
+            - 0.0.0.0:8080:8080
 project:
-    name: airflow
+    name: pruebas-airflow
