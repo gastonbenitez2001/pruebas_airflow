@@ -1,0 +1,51 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  webserver:
+    image: quay.io/astronomer/astro-runtime:11.7.0
+    build:
+      context: .
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    volumes:
+      - ./dags:/usr/local/airflow/dags
+      - ./plugins:/usr/local/airflow/plugins
+      - ./src:/usr/local/airflow/src  # Monta la carpeta src
+    ports:
+      - "8080:8080"  # Exponer el puerto del webserver
+    command: >
+      bash -c "
+      pip install -r /usr/local/airflow/requirements.txt &&
+      airflow db init &&
+      airflow webserver -p 8080
+      "
+    depends_on:
+      - postgres
+
+  scheduler:
+    image: quay.io/astronomer/astro-runtime:11.7.0
+    build:
+      context: .
+    volumes:
+      - ./dags:/usr/local/airflow/dags
+      - ./plugins:/usr/local/airflow/plugins
+    command: >
+      bash -c "
+      pip install -r /usr/local/airflow/requirements.txt &&
+      airflow scheduler
+      "
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-db-volume:
